@@ -14,7 +14,7 @@ import (
 type IUserController interface {
 	SignUp(c echo.Context) error
 	Login(c echo.Context) error
-	LogOut(c echo.Context) error
+	Logout(c echo.Context) error
 }
 
 type userController struct {
