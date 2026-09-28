@@ -25,13 +25,14 @@ func NewUserController(uu usecase.IUserUsecase) IUserController {
 	return &userController{uu}
 }
 
+
 func (uc *userController) SignUp(c echo.Context) error {
-	user := model.User{}
-	if err := c.Bind(&user); err != nil {
+	signUpRequestDTO := usecase.SignUpRequestDTO{}
+	if err := c.Bind(&signUpRequestDTO); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	userRes, err := uc.uu.SignUp(user)
+	userRes, err := uc.uu.SignUp(signUpRequestDTO)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
