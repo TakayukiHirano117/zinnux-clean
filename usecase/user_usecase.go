@@ -37,6 +37,7 @@ type SignUpResponseDTO struct {
 }
 
 func (uu *userUsecase) SignUp(signUpRequestDTO SignUpRequestDTO) (model.UserResponse, error) {
+	// これrepositoryのなかでやればよくね
 	hash, err := bcrypt.GenerateFromPassword([]byte(signUpRequestDTO.Password), 10)
 	if err != nil {
 		return model.UserResponse{}, err
