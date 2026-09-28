@@ -18,3 +18,8 @@ func NewUserEntity(id uuid.UUID, email string) (*UserEntity, error) {
 		email: email,
 	}, nil
 }
+
+// getter定義
+func (ue *UserEntity) ID() uuid.UUID {
+	return ue.id
+}

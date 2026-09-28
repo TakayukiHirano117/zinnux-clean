@@ -2,14 +2,16 @@
 package repository
 
 import (
+	"go-rest-api/domain/model/user"
 	"go-rest-api/model"
+	"time"
 
 	"gorm.io/gorm"
 )
 
 type IUserRepository interface {
 	GetUserByEmail(user *model.User, email string) error
-	CreateUser(user *model.User) error
+	CreateUser(user *user.UserEntity, passwordHash []byte) error
 }
 
 type userRepository struct {
@@ -27,7 +29,17 @@ func (ur *userRepository) GetUserByEmail(user *model.User, email string) error {
 	return nil
 }
 
-func (ur *userRepository) CreateUser(user *model.User) error {
+func (ur *userRepository) CreateUser(user *user.UserEntity, passwordHash []byte) error {
+	// データモデルに詰め替える
+	userDataModel := model.User{
+		ID: user.id,
+		Email: user.email,
+		Password: string(passwordHash),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	// データモデルを保存する
 	if err := ur.db.Create(user).Error; err != nil {
 		return err
 	}

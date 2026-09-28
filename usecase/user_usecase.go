@@ -3,10 +3,12 @@ package usecase
 
 import (
 	"go-rest-api/domain/model/user"
+	"go-rest-api/infra/shared"
 	"go-rest-api/model"
 	"go-rest-api/repository"
 	"os"
 	"time"
+
 	"github.com/google/uuid"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -20,10 +22,17 @@ type IUserUsecase interface {
 
 type userUsecase struct {
 	ur repository.IUserRepository
+	pg shared.IPasswordGenerator
 }
 
-func NewUserUsecase(ur repository.IUserRepository) IUserUsecase {
-	return &userUsecase{ur}
+func NewUserUsecase(
+		ur repository.IUserRepository,
+		pg shared.IPasswordGenerator,
+	) IUserUsecase {
+		return &userUsecase{
+			ur,
+			pg: pg,
+		}
 }
 
 type SignUpRequestDTO struct {
@@ -31,20 +40,25 @@ type SignUpRequestDTO struct {
 	Password string `json:"password"`
 }
 
+const DEFAULT_COST = 10
+
 type SignUpResponseDTO struct {
 	ID    uint   `json:"id"`
 	Email string `json:"email"`
 }
 
-func (uu *userUsecase) SignUp(signUpRequestDTO SignUpRequestDTO) (model.UserResponse, error) {
-	// これrepositoryのなかでやればよくね
-	hash, err := bcrypt.GenerateFromPassword([]byte(signUpRequestDTO.Password), 10)
-	if err != nil {
-		return model.UserResponse{}, err
-	}
-	// newUser := model.User{Email: user.Email, Password: string(hash)}
+func (uu *userUsecase) SignUp(signUpRequestDTO SignUpRequestDTO) (*model.UserResponse, error) {
 	newUser, err := user.NewUserEntity(uuid.New(), signUpRequestDTO.Email)
-	if err := uu.ur.CreateUser(&newUser); err != nil {
+	if err != nil {
+		return nil, err
+	}
+
+	passwordHash, err := uu.pg.Execute(signUpRequestDTO.Password, DEFAULT_COST)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := uu.ur.CreateUser(newUser, passwordHash); err != nil {
 		// errors出す
 		return model.UserResponse{}, err
 	}
