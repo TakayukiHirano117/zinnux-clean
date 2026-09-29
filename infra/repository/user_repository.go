@@ -30,7 +30,6 @@ func (ur *userRepository) GetUserByEmail(user *model.User, email string) error {
 }
 
 func (ur *userRepository) CreateUser(ue *user.UserEntity, passwordHash []byte) error {
-	// データモデルに詰め替える
 	userDataModel := model.User{
 		ID: ue.ID(),
 		Email: ue.Email(),

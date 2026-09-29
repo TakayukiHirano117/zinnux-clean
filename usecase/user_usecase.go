@@ -3,9 +3,9 @@ package usecase
 
 import (
 	"go-rest-api/domain/model/user"
+	"go-rest-api/infra/repository"
 	"go-rest-api/infra/shared"
 	"go-rest-api/model"
-	"go-rest-api/infra/repository"
 	"os"
 	"time"
 
@@ -36,14 +36,14 @@ func NewUserUsecase(
 }
 
 type SignUpRequestDTO struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string
+	Password string
 }
 
 const DEFAULT_COST = 10
 
 type SignUpResponseDTO struct {
-	ID    uuid.UUID   `json:"id"`
+	ID uuid.UUID `json:"id"`
 }
 
 func (uu *userUsecase) SignUp(signUpRequestDTO *SignUpRequestDTO) (*SignUpResponseDTO, error) {

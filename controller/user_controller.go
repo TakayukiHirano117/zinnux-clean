@@ -25,16 +25,28 @@ func NewUserController(uu usecase.IUserUsecase) IUserController {
 	return &userController{uu}
 }
 
+type SignUpRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 func (uc *userController) SignUp(c echo.Context) error {
-	signUpRequestDTO := usecase.SignUpRequestDTO{}
-	if err := c.Bind(&signUpRequestDTO); err != nil {
+	signUpRequest := SignUpRequest{}
+	// TODO: HTTP都合のバリデーションを行う
+	if err := c.Bind(&signUpRequest); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	signUpRequestDTO := usecase.SignUpRequestDTO{
+		Email: signUpRequest.Email,
+		Password: signUpRequest.Password,
 	}
 
 	userRes, err := uc.uu.SignUp(&signUpRequestDTO)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
+
 	return c.JSON(http.StatusCreated, userRes)
 }
 
