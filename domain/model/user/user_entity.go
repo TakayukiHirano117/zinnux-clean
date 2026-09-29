@@ -3,33 +3,17 @@ package user
 
 import (
 	"go-rest-api/domain/model/shared"
-	"net/mail"
-	"strings"
-
-	"github.com/cockroachdb/errors"
 )
 
 type UserEntity struct {
 	id    shared.UUID
-	email string
+	email Email
 }
 
-func NewUserEntity(id shared.UUID, email string) (*UserEntity, error) {
-	// TODO: これはVOにするので後で消す
-	trimmedEmail := strings.TrimSpace(email)
-	if trimmedEmail == "" {
-		return nil, errors.New("email is required")
-	}
-
-	// TODO: これはVOにするので後で消す
-	parsedEmail, err := mail.ParseAddress(trimmedEmail)
-	if err != nil {
-		return nil, errors.Wrap(err, "invalid email address")
-	}
-
+func NewUserEntity(id shared.UUID, email Email) (*UserEntity, error) {
 	return &UserEntity{
 		id:    id,
-		email: parsedEmail.Address,
+		email: email,
 	}, nil
 }
 
@@ -37,6 +21,6 @@ func (ue *UserEntity) ID() shared.UUID {
 	return ue.id
 }
 
-func (ue *UserEntity) Email() string {
+func (ue *UserEntity) Email() Email {
 	return ue.email
 }
