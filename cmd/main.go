@@ -16,6 +16,7 @@ func main() {
 	passwordGenerator := shared.NewPasswordGenerator()
 	userUsecase := usecase.NewUserUsecase(userRepository, passwordGenerator)
 	userController := controller.NewUserController(userUsecase)
+
 	e := router.NewRouter(userController)
 	e.Logger.Fatal(e.Start(":8080"))
 }

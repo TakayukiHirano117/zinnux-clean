@@ -2,10 +2,10 @@
 package usecase
 
 import (
+	domain_model_shared "go-rest-api/domain/model/shared"
 	"go-rest-api/domain/model/user"
 	"go-rest-api/infra/repository"
 	infra_shared "go-rest-api/infra/shared"
-	domain_model_shared "go-rest-api/domain/model/shared"
 	"go-rest-api/model"
 	"os"
 	"time"

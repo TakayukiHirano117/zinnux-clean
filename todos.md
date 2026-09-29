@@ -18,3 +18,10 @@ vo実装
     - [ ] 新規作成するやつ
 
 Aggregate実装
+
+
+## バリデーション
+HTTPバリデーション
+- [ ] go-playground/validatorを使う
+- [ ] main.goでe.Validator = &CustomValidator{validator: validator.New()}を登録する
+- [ ] controllerでc.Validate(&signUpRequest);でバリデーションかける

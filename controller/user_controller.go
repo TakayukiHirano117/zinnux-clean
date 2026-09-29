@@ -26,19 +26,23 @@ func NewUserController(uu usecase.IUserUsecase) IUserController {
 }
 
 type SignUpRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" validate:"min=0,max=255,required,email"`
+	Password string `json:"password" validate:"min=0,max=100,required"`
 }
 
 func (uc *userController) SignUp(c echo.Context) error {
 	signUpRequest := SignUpRequest{}
-	// TODO: HTTP都合のバリデーションを行う
 	if err := c.Bind(&signUpRequest); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
+	if err := c.Validate(&signUpRequest); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+	}
+
+
 	signUpRequestDTO := usecase.SignUpRequestDTO{
-		Email: signUpRequest.Email,
+		Email:    signUpRequest.Email,
 		Password: signUpRequest.Password,
 	}
 
@@ -47,7 +51,6 @@ func (uc *userController) SignUp(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	// TODO: response型を作成して詰め替える
-
 	return c.JSON(http.StatusCreated, userRes)
 }
 

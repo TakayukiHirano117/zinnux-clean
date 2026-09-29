@@ -11,6 +11,7 @@ import (
 
 type Email string
 
+// TODO: @の前後の文字数チェックをしたい。RFC基準だと複雑すぎるので
 func NewEmail(val string) (Email, error) {
 	if strings.TrimSpace(val) == "" {
 		return "", errors.New("email is required")
