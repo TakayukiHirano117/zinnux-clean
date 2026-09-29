@@ -1,4 +1,4 @@
-// # go-rest-api/router/validator
+// Package validator
 package validator
 
 import "github.com/go-playground/validator/v10"
