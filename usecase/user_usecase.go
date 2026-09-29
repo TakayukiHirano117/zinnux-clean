@@ -4,12 +4,11 @@ package usecase
 import (
 	"go-rest-api/domain/model/user"
 	"go-rest-api/infra/repository"
-	"go-rest-api/infra/shared"
+	infra_shared "go-rest-api/infra/shared"
+	domain_model_shared "go-rest-api/domain/model/shared"
 	"go-rest-api/model"
 	"os"
 	"time"
-
-	"github.com/google/uuid"
 
 	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
@@ -22,12 +21,12 @@ type IUserUsecase interface {
 
 type userUsecase struct {
 	ur repository.IUserRepository
-	pg shared.IPasswordGenerator
+	pg infra_shared.IPasswordGenerator
 }
 
 func NewUserUsecase(
 	ur repository.IUserRepository,
-	pg shared.IPasswordGenerator,
+	pg infra_shared.IPasswordGenerator,
 ) IUserUsecase {
 	return &userUsecase{
 		ur: ur,
@@ -43,11 +42,12 @@ type SignUpRequestDTO struct {
 const DEFAULT_COST = 10
 
 type SignUpResponseDTO struct {
-	ID uuid.UUID `json:"id"`
+	ID domain_model_shared.UUID
 }
 
 func (uu *userUsecase) SignUp(signUpRequestDTO *SignUpRequestDTO) (*SignUpResponseDTO, error) {
-	newUser, err := user.NewUserEntity(uuid.New(), signUpRequestDTO.Email)
+	email, err := user.NewEmail(signUpRequestDTO.Email)
+	newUser, err := user.NewUserEntity(domain_model_shared.NewUUID(), email)
 	if err != nil {
 		return nil, err
 	}

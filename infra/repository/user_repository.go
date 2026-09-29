@@ -3,9 +3,10 @@ package repository
 
 import (
 	"go-rest-api/domain/model/user"
-	"go-rest-api/model"
+	"go-rest-api/infra/model"
 	"time"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -30,10 +31,15 @@ func (ur *userRepository) GetUserByEmail(user *model.User, email string) error {
 }
 
 func (ur *userRepository) CreateUser(ue *user.UserEntity, passwordHash []byte) error {
+	parsedUserID, err := uuid.Parse(string(ue.ID()))
+	if err != nil {
+		return err
+	}
+
 	userDataModel := model.User{
-		ID: ue.ID(),
-		Email: ue.Email(),
-		Password: string(passwordHash),
+		ID:        parsedUserID,
+		Email:     string(ue.Email()),
+		Password:  string(passwordHash),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}

@@ -2,7 +2,7 @@
 package controller
 
 import (
-	"go-rest-api/model"
+	"go-rest-api/infra/model"
 	"go-rest-api/usecase"
 	"net/http"
 	"os"
@@ -46,6 +46,7 @@ func (uc *userController) SignUp(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
+	// TODO: response型を作成して詰め替える
 
 	return c.JSON(http.StatusCreated, userRes)
 }
