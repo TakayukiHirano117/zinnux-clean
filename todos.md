@@ -25,3 +25,7 @@ HTTPバリデーション
 - [ ] go-playground/validatorを使う
 - [ ] main.goでe.Validator = &CustomValidator{validator: validator.New()}を登録する
 - [ ] controllerでc.Validate(&signUpRequest);でバリデーションかける
+
+## エラーハンドリング
+- [ ] バリデーションエラーの取得と返し方
+- [ ] ドメインエラーの実装と返し方

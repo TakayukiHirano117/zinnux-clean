@@ -40,7 +40,6 @@ func (uc *userController) SignUp(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
 
-
 	signUpRequestDTO := usecase.SignUpRequestDTO{
 		Email:    signUpRequest.Email,
 		Password: signUpRequest.Password,
