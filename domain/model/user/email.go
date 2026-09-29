@@ -21,7 +21,7 @@ func NewEmail(val string) (Email, error) {
 		return "", errors.Wrap(err, "invalid email address")
 	}
 
-	email := Email(parsedAddress.String())
+	email := Email(parsedAddress.Address)
 	return email, nil
 }
 
