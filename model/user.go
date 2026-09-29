@@ -1,10 +1,13 @@
 // Package model
 package model
 
-import "time"
+import (
+	"time"
+	"github.com/google/uuid"
+)
 
 type User struct {
-	ID        uint      `json:"id" gorm:"primaryKey"`
+	ID        uuid.UUID      `json:"id" gorm:"primaryKey"`
 	Email     string    `json:"email" gorm:"unique"`
 	Password  string    `json:"password"`
 	CreatedAt time.Time `json:"created_at"`

@@ -5,7 +5,7 @@ import (
 	"go-rest-api/domain/model/user"
 	"go-rest-api/infra/shared"
 	"go-rest-api/model"
-	"go-rest-api/repository"
+	"go-rest-api/infra/repository"
 	"os"
 	"time"
 
@@ -16,7 +16,7 @@ import (
 )
 
 type IUserUsecase interface {
-	SignUp(signUpRequestDTO SignUpRequestDTO) (SignUpResponseDTO, error)
+	SignUp(signUpRequestDTO *SignUpRequestDTO) (*SignUpResponseDTO, error)
 	Login(user model.User) (string, error)
 }
 
@@ -26,13 +26,13 @@ type userUsecase struct {
 }
 
 func NewUserUsecase(
-		ur repository.IUserRepository,
-		pg shared.IPasswordGenerator,
-	) IUserUsecase {
-		return &userUsecase{
-			ur,
-			pg: pg,
-		}
+	ur repository.IUserRepository,
+	pg shared.IPasswordGenerator,
+) IUserUsecase {
+	return &userUsecase{
+		ur: ur,
+		pg: pg,
+	}
 }
 
 type SignUpRequestDTO struct {
@@ -43,11 +43,10 @@ type SignUpRequestDTO struct {
 const DEFAULT_COST = 10
 
 type SignUpResponseDTO struct {
-	ID    uint   `json:"id"`
-	Email string `json:"email"`
+	ID    uuid.UUID   `json:"id"`
 }
 
-func (uu *userUsecase) SignUp(signUpRequestDTO SignUpRequestDTO) (*model.UserResponse, error) {
+func (uu *userUsecase) SignUp(signUpRequestDTO *SignUpRequestDTO) (*SignUpResponseDTO, error) {
 	newUser, err := user.NewUserEntity(uuid.New(), signUpRequestDTO.Email)
 	if err != nil {
 		return nil, err
@@ -59,15 +58,10 @@ func (uu *userUsecase) SignUp(signUpRequestDTO SignUpRequestDTO) (*model.UserRes
 	}
 
 	if err := uu.ur.CreateUser(newUser, passwordHash); err != nil {
-		// errors出す
-		return model.UserResponse{}, err
+		return nil, err
 	}
 
-	resUser := model.UserResponse{
-		ID:    newUser.ID,
-		Email: newUser.Email,
-	}
-	return resUser, nil
+	return &SignUpResponseDTO{ID: newUser.ID()}, nil
 }
 
 func (uu *userUsecase) Login(user model.User) (string, error) {

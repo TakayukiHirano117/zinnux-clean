@@ -29,18 +29,17 @@ func (ur *userRepository) GetUserByEmail(user *model.User, email string) error {
 	return nil
 }
 
-func (ur *userRepository) CreateUser(user *user.UserEntity, passwordHash []byte) error {
+func (ur *userRepository) CreateUser(ue *user.UserEntity, passwordHash []byte) error {
 	// データモデルに詰め替える
 	userDataModel := model.User{
-		ID: user.id,
-		Email: user.email,
+		ID: ue.ID(),
+		Email: ue.Email(),
 		Password: string(passwordHash),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
 
-	// データモデルを保存する
-	if err := ur.db.Create(user).Error; err != nil {
+	if err := ur.db.Create(userDataModel).Error; err != nil {
 		return err
 	}
 	return nil
