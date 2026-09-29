@@ -15,6 +15,7 @@ type UserEntity struct {
 }
 
 func NewUserEntity(id uuid.UUID, email string) (*UserEntity, error) {
+	// TODO: shared.UUIDみたいにしてこれもuser_entityから消したい
 	if id == uuid.Nil {
 		return nil, errors.New("user id must be a valid UUID")
 	}
@@ -25,6 +26,7 @@ func NewUserEntity(id uuid.UUID, email string) (*UserEntity, error) {
 		return nil, errors.New("email is required")
 	}
 
+	// TODO: これはVOにするので後で消す
 	parsedEmail, err := mail.ParseAddress(trimmedEmail)
 	if err != nil {
 		return nil, errors.Wrap(err, "invalid email address")
