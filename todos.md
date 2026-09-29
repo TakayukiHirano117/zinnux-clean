@@ -10,4 +10,11 @@ DTOはユースケースに置く
 - [ ] Controller, UseCaseでRequestの型とDTOの型を分ける
   - [ ] Requestの型がDTOに依存するので。そうなるとUseCaseのDTOのプロパティの数が増減するとそれにcontrollerのrequestのプロパティ数も引っ張られる。密結合になっちゃう
 
+vo実装
+- [ ] user email
+- [ ] uuid
+  - [ ] コンストラクタ
+    - [ ] DBから作るやつ
+    - [ ] 新規作成するやつ
+
 Aggregate実装

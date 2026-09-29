@@ -2,24 +2,19 @@
 package user
 
 import (
+	"go-rest-api/domain/model/shared"
 	"net/mail"
 	"strings"
 
 	"github.com/cockroachdb/errors"
-	"github.com/google/uuid"
 )
 
 type UserEntity struct {
-	id    uuid.UUID
+	id    shared.UUID
 	email string
 }
 
-func NewUserEntity(id uuid.UUID, email string) (*UserEntity, error) {
-	// TODO: shared.UUIDみたいにしてこれもuser_entityから消したい
-	if id == uuid.Nil {
-		return nil, errors.New("user id must be a valid UUID")
-	}
-
+func NewUserEntity(id shared.UUID, email string) (*UserEntity, error) {
 	// TODO: これはVOにするので後で消す
 	trimmedEmail := strings.TrimSpace(email)
 	if trimmedEmail == "" {
@@ -38,7 +33,7 @@ func NewUserEntity(id uuid.UUID, email string) (*UserEntity, error) {
 	}, nil
 }
 
-func (ue *UserEntity) ID() uuid.UUID {
+func (ue *UserEntity) ID() shared.UUID {
 	return ue.id
 }
 
