@@ -40,6 +40,9 @@ Aggregate実装
 
 https://docs.docker.com/guides/golang/ を参考に作る
 
+## マイグレートツール導入
+gormだと弱い
+
 ## Done
 
 HTTPバリデーション
