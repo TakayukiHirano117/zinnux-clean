@@ -47,7 +47,11 @@ type SignUpResponseDTO struct {
 
 func (uu *userUsecase) SignUp(signUpRequestDTO *SignUpRequestDTO) (*SignUpResponseDTO, error) {
 	email, err := user.NewEmail(signUpRequestDTO.Email)
-	newUser, err := user.NewUserEntity(domain_model_shared.NewUUID(), email)
+	if err != nil {
+		return nil, err
+	}
+
+	ue, err := user.NewUserEntity(domain_model_shared.NewUUID(), email)
 	if err != nil {
 		return nil, err
 	}
@@ -57,11 +61,11 @@ func (uu *userUsecase) SignUp(signUpRequestDTO *SignUpRequestDTO) (*SignUpRespon
 		return nil, err
 	}
 
-	if err := uu.ur.CreateUser(newUser, passwordHash); err != nil {
+	if err := uu.ur.CreateUser(ue, passwordHash); err != nil {
 		return nil, err
 	}
 
-	return &SignUpResponseDTO{ID: newUser.ID()}, nil
+	return &SignUpResponseDTO{ID: ue.ID()}, nil
 }
 
 func (uu *userUsecase) Login(user model.User) (string, error) {
