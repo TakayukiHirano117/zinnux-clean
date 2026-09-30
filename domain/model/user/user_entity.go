@@ -10,7 +10,7 @@ type UserEntity struct {
 	email Email
 }
 
-const maxUnCompletedTaskCount = 20
+// const maxUnCompletedTaskCount = 20
 
 func NewUserEntity(id shared.UUID, email Email) (*UserEntity, error) {
 	return &UserEntity{
@@ -20,10 +20,10 @@ func NewUserEntity(id shared.UUID, email Email) (*UserEntity, error) {
 }
 
 // これ現状のままだとドメインサービスの方が適切かもしれん。ユーザーとタスク別集約なので。
-func (ue *UserEntity) CanCreateTask(uncompletedTaskCount int) bool {
-	canCreate :=  uncompletedTaskCount < maxUnCompletedTaskCount
-	return canCreate
-}
+// func (ue *UserEntity) CanCreateTask(uncompletedTaskCount int) bool {
+// 	canCreate :=  uncompletedTaskCount < maxUnCompletedTaskCount
+// 	return canCreate
+// }
 
 func (ue *UserEntity) ID() shared.UUID {
 	return ue.id
