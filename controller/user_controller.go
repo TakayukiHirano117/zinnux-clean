@@ -27,7 +27,7 @@ func NewUserController(uu usecase.IUserUsecase) IUserController {
 
 type SignUpRequest struct {
 	Email    string `json:"email" validate:"min=0,max=255,required,email"`
-	Password string `json:"password" validate:"min=0,max=100,required"`
+	Password string `json:"password" validate:"min=8,max=100,required"`
 }
 
 func (uc *userController) SignUp(c echo.Context) error {

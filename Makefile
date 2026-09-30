@@ -4,4 +4,4 @@ migrate:
 	GO_ENV=dev go run migrate/migrate.go
 
 up:
-	go run ./cmd/main.go
+	GO_ENV=dev go run ./cmd/main.go

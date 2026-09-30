@@ -6,7 +6,7 @@ import (
 	"go-rest-api/domain/model/user"
 	"go-rest-api/infra/repository"
 	infra_shared "go-rest-api/infra/shared"
-	"go-rest-api/model"
+	"go-rest-api/infra/model"
 	"os"
 	"time"
 
