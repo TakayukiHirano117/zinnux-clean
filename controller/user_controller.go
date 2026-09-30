@@ -30,6 +30,11 @@ type SignUpRequest struct {
 	Password string `json:"password" validate:"min=8,max=100,required"`
 }
 
+type SignUpResponse struct {
+	ID string `json:"id"`
+}
+
+
 func (uc *userController) SignUp(c echo.Context) error {
 	signUpRequest := SignUpRequest{}
 	if err := c.Bind(&signUpRequest); err != nil {
@@ -49,8 +54,11 @@ func (uc *userController) SignUp(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	// TODO: response型を作成して詰め替える
-	return c.JSON(http.StatusCreated, userRes)
+
+	signUpResponse := SignUpResponse{
+		ID: string(userRes.ID),
+	}
+	return c.JSON(http.StatusCreated, signUpResponse)
 }
 
 func (uc *userController) Login(c echo.Context) error {
