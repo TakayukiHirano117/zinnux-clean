@@ -16,9 +16,11 @@ func NewRouter(uc controller.IUserController) *echo.Echo {
 	e.Use(middleware.RequestLogger())
 	e.Use(middleware.Recover())
 
-	e.POST("/signup", uc.SignUp)
-	e.POST("/login", uc.Login)
-	e.POST("/logout", uc.Logout)
+	api := e.Group("/api")
+
+	api.POST("/signup", uc.SignUp)
+	api.POST("/login", uc.Login)
+	api.POST("/logout", uc.Logout)
 
 	return e
 }

@@ -34,7 +34,6 @@ type SignUpResponse struct {
 	ID string `json:"id"`
 }
 
-
 func (uc *userController) SignUp(c echo.Context) error {
 	signUpRequest := SignUpRequest{}
 	if err := c.Bind(&signUpRequest); err != nil {
